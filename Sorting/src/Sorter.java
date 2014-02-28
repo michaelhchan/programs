@@ -1,26 +1,12 @@
 public class Sorter
 {
-
 	private static void swap(int i, int j, int[]nums)
 	{
 		int tmp = nums[i];
 		nums[i] = nums[j];
 		nums[j] = tmp;
 	}
-	
 
-	/**
-	 * Sorts the given array of integers using the Quick Sort algorithm
-	 * @param integers	array of integer numbers to sort
-	 */
-	public static void quickSort(int[] integers)
-	{
-		if (integers != null && 0 < integers.length)
-		{
-			quickSort(0, integers.length - 1, integers);
-		}
-	}
-	
 	private static void quickSort(int lo, int hi, int[]nums)
 	{
 		// elements to consider
@@ -74,6 +60,25 @@ public class Sorter
 		}
 	}
 
+	/**
+	 * Sorts the given array of integers using the Quick Sort algorithm.
+	 * Worst case: O(n^2)
+	 * Average case: O(nlogn)
+	 * Best case: O(n)
+	 * @param integers	array of integer numbers to sort
+	 */
+	public static void quickSort(int[] integers)
+	{
+		if (integers != null && 0 < integers.length)
+		{
+			quickSort(0, integers.length - 1, integers);
+		}
+	}
+	
+	/**
+	 * Sorts the given array of integers using the Bubble Sort algorithm
+	 * @param integers	array of integer numbers to sort
+	 */
 	public static void bubbleSort(int[] nums)
 	{
 		if (nums != null && 0 < nums.length)
@@ -92,6 +97,10 @@ public class Sorter
 		}
 	}
 	
+	/**
+	 * Sorts the given array of integers using the Insertion Sort algorithm
+	 * @param integers	array of integer numbers to sort
+	 */
 	public static void insertionSort(int[] nums)
 	{
 		if (nums != null && 0 < nums.length)
@@ -109,45 +118,145 @@ public class Sorter
 		}
 	}
 	
-	public static void heapify(int i, int[] nums)
+	private static void maxHeapify(int i, int max, int[] nums)
 	{
-		if (nums != null && 0 < nums.length)
+		int l = (2 * i) + 1;	// get left child index
+		int r = (2 * i) + 2;	// get right child index
+		int largest = 0;
+		
+		// check left child if larger than current node
+		if (l <= max && nums[i] < nums[l])
 		{
-			int size = nums.length;
-			int l = (2 * i) + 1;	// get left child index
-			int r = (2 * i) + 2;	// get right child index
-			int largest = 0;
-			
-			if (l <= size && nums[i] < nums[l])
-			{
-				largest = l;
-			}
-			else
-			{
-				largest = i;
-			}
-			
-			if (r <= size && nums[largest] < nums[r])
-			{
-				largest = r;
-			}
-			
-			if (largest != i)
-			{
-				swap(i, largest, nums);
-				heapify(largest, nums);
-			}
+			largest = l;
+		}
+		else
+		{
+			largest = i;
+		}
+		
+		// check right child if largest
+		if (r <= max && nums[largest] < nums[r])
+		{
+			largest = r;
+		}
+		
+		// if we found a largest, swap and recurse
+		if (largest != i)
+		{
+			swap(i, largest, nums);
+			maxHeapify(largest, max, nums);
 		}
 	}
 	
+	private static void buildHeap(int max, int[] nums)
+	{
+		for (int i = (max/2); 0 <= i; i--)
+		{
+			maxHeapify(i, max, nums);
+		}
+	}
+	
+	/**
+	 * Builds a heap out of the input array
+	 * @param integers	array of integer numbers to sort
+	 */
 	public static void buildHeap(int[] nums)
 	{
 		if (nums != null && 0 < nums.length)
 		{
-			for (int i = (nums.length/2); i > 0; i--)
+			buildHeap(nums.length - 1, nums);
+		}
+	}
+	
+	/**
+	 * Sorts the given array of integers using the Heap Sort algorithm
+	 * @param integers	array of integer numbers to sort
+	 */
+	public static void heapSort(int[] nums)
+	{
+		// build a heap
+		buildHeap(nums);
+		
+		for (int i = nums.length - 1; 0 < i; i--)
+		{
+			// swap the top of heap with end of array
+			swap(0, i, nums);
+
+			// re-build the heap
+			maxHeapify(0, i - 1, nums);
+		}
+	}
+	
+	private static void merge(int lo, int mid, int hi, int nums[], int tmp[])
+	{
+		// Copy both parts into the temporary array
+		for (int i = lo; i <= hi; i++)
+		{
+			tmp[i] = nums[i];
+		}
+
+		int i = lo;
+		int j = mid + 1;
+		int k = lo;
+
+		// Copy the smallest values from either the left or the right side back
+		// to the original array
+		while (i <= mid && j <= hi)
+		{
+			if (tmp[i] <= tmp[j])
 			{
-				heapify(i, nums);
+				nums[k] = tmp[i];
+				i++;
 			}
+			else
+			{
+				nums[k] = tmp[j];
+				j++;
+			}
+			k++;
+		}
+		
+		// Copy the rest of the left side of the array into the target array
+		while (i <= mid)
+		{
+			nums[k] = tmp[i];
+			k++;
+			i++;
+		}
+	}
+	
+	private static void mergeSort(int lo, int hi, int[] nums, int[]tmp)
+	{
+	    // check if low is smaller then high, if not then the array is sorted
+	    if (lo < hi)
+	    {
+	      // Get the index of the element which is in the middle
+	      int mid = lo + (hi - lo) / 2;
+	      
+	      // Sort the left side of the array
+	      mergeSort(lo, mid, nums, tmp);
+	      
+	      // Sort the right side of the array
+	      mergeSort(mid + 1, hi, nums, tmp);
+	      
+	      // Combine them both
+	      merge(lo, mid, hi, nums, tmp);
+	    }
+	}
+	
+	/**
+	 * Sorts the given array of integers using the Merge Sort algorithm
+	 * @param integers	array of integer numbers to sort
+	 */
+	public static void mergeSort(int[] nums)
+	{
+		if (nums != null && 0 < nums.length)
+		{
+			// allocate a temporary array
+			int[] tmp = new int[nums.length];
+			
+			// perform merge sort
+			mergeSort(0, nums.length - 1, nums, tmp);
 		}
 	}
 	
@@ -170,24 +279,34 @@ public class Sorter
 			nums[i - 1] = Integer.parseInt(args[i]);
 		}
 
+		
 		// print before
+		System.out.println(fn);
 		printArray(nums);
 
-		if (fn.equals("-quickSort"))
+		if (fn.equals("quickSort"))
 		{
 			quickSort(nums);
 		}
-		else if (fn.equals("-bubbleSort"))
+		else if (fn.equals("bubbleSort"))
 		{
 			bubbleSort(nums);
 		}
-		else if (fn.equals("-insertionSort"))
+		else if (fn.equals("insertionSort"))
 		{
 			insertionSort(nums);
 		}
-		else if (fn.equals("-buildHeap"))
+		else if (fn.equals("buildHeap"))
 		{
 			buildHeap(nums);
+		}
+		else if (fn.equals("heapSort"))
+		{
+			heapSort(nums);
+		}
+		else if (fn.equals("mergeSort"))
+		{
+			mergeSort(nums);
 		}
 
 		// print after
