@@ -77,6 +77,7 @@ public class Sorter
 	
 	/**
 	 * Sorts the given array of integers using the Bubble Sort algorithm
+	 * Worst case: O(n^2)
 	 * @param integers	array of integer numbers to sort
 	 */
 	public static void bubbleSort(int[] nums)
@@ -99,6 +100,7 @@ public class Sorter
 	
 	/**
 	 * Sorts the given array of integers using the Insertion Sort algorithm
+	 * Worst case: O(n^2)
 	 * @param integers	array of integer numbers to sort
 	 */
 	public static void insertionSort(int[] nums)
@@ -170,6 +172,7 @@ public class Sorter
 	
 	/**
 	 * Sorts the given array of integers using the Heap Sort algorithm
+	 * Average case: O(nlogn)
 	 * @param integers	array of integer numbers to sort
 	 */
 	public static void heapSort(int[] nums)
@@ -246,6 +249,7 @@ public class Sorter
 	
 	/**
 	 * Sorts the given array of integers using the Merge Sort algorithm
+	 * Average case: O(nlogn)
 	 * @param integers	array of integer numbers to sort
 	 */
 	public static void mergeSort(int[] nums)
