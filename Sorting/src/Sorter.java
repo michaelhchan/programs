@@ -263,6 +263,32 @@ public class Sorter
 			mergeSort(0, nums.length - 1, nums, tmp);
 		}
 	}
+
+	/**
+	 * Sorts the given array of integers using the Selection Sort algorithm
+	 * Analysis: O(n^2)
+	 * @param integers	array of integer numbers to sort
+	 */
+	public static void selectionSort(int[] nums)
+	{
+		// loop through all cells
+		for (int i = 0; nums != null && i < nums.length; i++)
+		{
+			// loop through all cells to find the minimum
+			int minIdx = i;
+			for (int j = i; j < nums.length; j++)
+			{
+				// if we found a lower value, note the index
+				if (nums[j] < nums[minIdx])
+				{
+					minIdx = j;
+				}
+			}
+			
+			// swap lowest cell with the minimum value found
+			swap(i, minIdx, nums);
+		}
+	}
 	
 	private static void printArray(int[] nums)
 	{
@@ -311,6 +337,10 @@ public class Sorter
 		else if (fn.equals("mergeSort"))
 		{
 			mergeSort(nums);
+		}
+		else if (fn.equals("selectionSort"))
+		{
+			selectionSort(nums);
 		}
 
 		// print after
