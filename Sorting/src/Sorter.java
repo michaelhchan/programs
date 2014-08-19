@@ -1,3 +1,8 @@
+/**
+ * This is a class to highlight the different sorting algorthims.
+ * 
+ * @author michael
+ * */
 public class Sorter
 {
 	private static void swap(int i, int j, int[]nums)
